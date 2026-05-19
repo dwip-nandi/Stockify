@@ -108,7 +108,7 @@ if (!empty($user_first_name) && !empty($user_last_name)) {
 
     <body>
         <div class="container">
-            <?php require('D:\Ampps\www\Store Management System\banner.php'); ?>
+            <?php require('banner.php'); ?>
 
             <div class="form-box">
                 <h2>Edit User</h2>

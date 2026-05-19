@@ -1,6 +1,6 @@
 <?php
-require('D:\\Ampps\\www\\Store Management System\\connection.php');
-session_start();
+require __DIR__ . '/../connection.php';
+require __DIR__ . '/../auth.php';
 
 $user_first_name = $_SESSION['user_first_name'];
 $user_last_name = $_SESSION['user_last_name'];
@@ -18,10 +18,10 @@ if (!empty($user_first_name) && !empty($user_last_name)) {
     }
 
     // Handle Adding Products
-    require('D:\\Ampps\\www\\Store Management System\\store_vew\\adding_product.php');
+    require('adding_product.php');
 
     // Handle Selling Products
-    require('D:\\Ampps\\www\\Store Management System\\store_vew\\selling_product.php');
+    require('selling_product.php');
     // Handle Search Filters
     $search_name = $_GET['search_name'] ?? '';
     $search_category = $_GET['search_category'] ?? '';
@@ -284,7 +284,7 @@ if (!empty($user_first_name) && !empty($user_last_name)) {
     </head>
     <body>
         <div class="container">
-            <?php require('D:\Ampps\www\Store Management System\banner.php'); ?>
+            <?php require __DIR__ . '/../banner.php'; ?>
         </div>
             <h1>Product List</h1>
             <form method="GET" action="" class="search-form" autocomplete="off">
@@ -411,8 +411,5 @@ if (!empty($user_first_name) && !empty($user_last_name)) {
 
     </html>
 <?php
-} else {
-    header('location:login_system.php');
-    exit();
 }
 ?>

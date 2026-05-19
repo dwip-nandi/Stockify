@@ -1,6 +1,26 @@
-<?php 
-require('connection.php');
+<?php
+ob_start(); 
 session_start();
+require('connection.php');
+require('banner.php');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $user_email = $_POST['user_email'];
+    $user_password = $_POST['user_password'];
+
+    $sql = "SELECT * FROM `users` WHERE user_email='$user_email' AND user_password='$user_password'";
+    $query = $conn->query($sql);
+
+    if (mysqli_num_rows($query) > 0) {
+        $data = mysqli_fetch_array($query);
+        $_SESSION['user_first_name'] = $data['user_first_name'];
+        $_SESSION['user_last_name'] = $data['user_last_name'];
+        header('Location: index1.php');
+        exit();
+    } else {
+        $login_error = "<p class='error-message'><i class='fa-solid fa-exclamation-circle'></i> Incorrect login credentials. Please try again.</p>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -63,29 +83,10 @@ session_start();
 
 <div class="login-container">
     <h2><i class="fa-solid fa-user-lock"></i> User Login</h2>
-    
-    <?php
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $user_email = $_POST['user_email'];
-        $user_password = $_POST['user_password'];
 
-        $sql= "SELECT * FROM `users` WHERE user_email='$user_email' && user_password='$user_password'";
-        $query = $conn->query($sql);
+    <?php if (!empty($login_error)) echo $login_error; ?>
 
-        if(mysqli_num_rows($query) > 0){
-            $data = mysqli_fetch_array($query);
-            $_SESSION['user_first_name'] = $data['user_first_name'];
-            $_SESSION['user_last_name'] = $data['user_last_name'];
-
-            header('location:index1.php');
-            exit();
-        } else {
-            echo "<p class='error-message'><i class='fa-solid fa-exclamation-circle'></i> Incorrect login credentials. Please try again.</p>";
-        }
-    }
-    ?>
-    
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
         <label for="email">User Email:</label>
         <input type="email" name="user_email" required>
 
@@ -98,3 +99,7 @@ session_start();
 
 </body>
 </html>
+
+<?php
+ob_end_flush(); // End buffering and flush output
+?>

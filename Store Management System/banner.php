@@ -128,10 +128,10 @@
                 </div>
             </div>
             <div class="qr-container">
-                <a href="user_vew/product.php">
+                <a href="/Store Management System/user_vew/product.php">
                     <img src="img/stockify_qr.png" alt="User View QR" class="img-fluid ms-3" data-aos="zoom-in" data-aos-delay="700">
                 </a>
-                <a class="user_view" href="user_vew/product.php">
+                <a class="user_view" href="/Store Management System/user_vew/product.php">
                     <i class="fa-solid fa-circle-user"></i> User View
                 </a>
             </div>

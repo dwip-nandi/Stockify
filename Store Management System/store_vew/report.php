@@ -25,13 +25,13 @@
     <h1 class="mb-4 text-center">📊 Report By Stockify</h1>
 
     <!-- Daily Report -->
-    <a href="D:\Ampps\www\Store Management System\store_vew\daily_report.php" class="btn btn-success btn-custom">📅 Daily Report</a>
+    <a href="daily_report.php" class="btn btn-success btn-custom">📅 Daily Report</a>
 
     <!-- Print Button -->
     <button class="btn btn-primary print-btn" onclick="window.print()">🖨️ Print Report</button>
 
     <!-- Monthly Report -->
-    <a href="D:\Ampps\www\Store Management System\store_vew\monthly_repert.php" class="btn btn-info btn-custom">📆 Monthly Report</a>
+    <a href="monthly_repert.php" class="btn btn-info btn-custom">📆 Monthly Report</a>
 
 </body>
 </html>

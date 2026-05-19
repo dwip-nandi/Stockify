@@ -1,5 +1,6 @@
 <?php
-require 'D:\Ampps\www\Store Management System\connection.php';
+require __DIR__ . '/../connection.php';
+require __DIR__ . '/../auth.php';
 date_default_timezone_set('Asia/Dhaka');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_code'])) {
@@ -94,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_code'])) {
 
 <body>
     <div class="container">
-        <?php require('D:\Ampps\www\Store Management System\banner.php'); ?>
+        <?php require __DIR__ . '/../banner.php';?>
         <div class="scanner-box">
             <h2>📦 Scan Product Code</h2>
             <form id="scan-form">

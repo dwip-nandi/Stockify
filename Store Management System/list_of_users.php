@@ -101,7 +101,7 @@ if (!empty($user_first_name) && !empty($user_last_name)) {
 </head>
 <body>
     <div class="container">
-        <?php require('D:/Ampps/www/Store Management System/banner.php'); ?>
+        <?php require('banner.php'); ?>
         <div class="table-container">
             <h2 class="table-title"><i class="fa-solid fa-users"></i> List of Users</h2>
 

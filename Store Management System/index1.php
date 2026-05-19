@@ -134,7 +134,7 @@ if (!empty($user_first_name) && !empty($user_last_name)) {
 
     <body>
         <div class="container">
-            <?php require('D:\Ampps\www\Store Management System\banner.php'); ?>
+            <?php require('banner.php'); ?>
 
             <div class="navbar-custom">
                 <h2 class="slide-in-right-loop">Welcome to STOCKIFY</h2>
@@ -157,32 +157,32 @@ if (!empty($user_first_name) && !empty($user_last_name)) {
                 'Product Management' => [
                     ["add_product.php", "fa-box-open", "Add Product", "text-primary"],
                     ["store_vew/sells.php", "fa-boxes", "List of Product", "text-primary"],
-                    ["edit_product.php", "fa-edit", "Edit Product", "text-primary"],
-                    ["delete_product.php", "fa-trash-alt", "Delete Product", "text-primary"],
+                    ["manage_products.php", "fa-edit", "Edit Product", "text-primary"],
+                    ["manage_delete_product.php", "fa-trash-alt", "Delete Product", "text-primary"],
                 ],
                 'Category Management' => [
                     ["add_catagory.php", "fa-folder-plus", "Add Category", "text-success"],
                     ["list_of_catagory.php", "fa-folder-open", "List of Category", "text-success"],
-                    ["edit_category.php", "fa-edit", "Edit Category", "text-success"],
-                    ["delete_category.php", "fa-trash-alt", "Delete Category", "text-success"],
+                    ["manage_categories.php", "fa-edit", "Edit Category", "text-success"],
+                    ["manage_delete_category.php", "fa-trash-alt", "Delete Category", "text-success"],
                 ],
                 'Discount Calendar' => [
                     ["event_calander/add_event.php", "fa-calendar-plus", "Add Event", "text-info"],
                     ["event_calander/event_calander.php", "fa-calendar-alt", "Discount Calendar", "text-info"],
-                    ["edit_user.php", "fa-edit", "Edit Event", "text-info"],
-                    ["delete_user.php", "fa-calendar-times", "Delete Event", "text-info"],
+                    ["event_calander/manage_events.php", "fa-edit", "Edit Event", "text-info"],
+                    ["event_calander/manage_deleteevent.php", "fa-calendar-times", "Delete Event", "text-info"],
                 ],
                 'Feature Products' => [
                     ["user_vew/add_featur_product.php", "fa-plus", "Add Feature Product", "text-warning"],
                     ["user_vew/feature_product.php", "fa-list-check", "Feature Product List", "text-warning"],
-                    ["edit_user.php", "fa-edit", "Edit Feature Product", "text-warning"],
-                    ["delete_user.php", "fa-calendar-times", "Delete Feature Product", "text-warning"],
+                    ["user_vew/manage_feature_products.php", "fa-edit", "Edit Feature Product", "text-warning"],
+                    ["user_vew/manage_delete_feature_products.php", "fa-calendar-times", "Delete Feature Product", "text-warning"],
                 ],
                 'Dynamic Features' => [
                     ["store_vew/calender_view.php", "fa-chart-line", "Profit Calendar", "text-success"],
                     ["store_vew/daily_report.php", "fa-calendar-day", "Daily Report", "text-success"],
                     ["store_vew/monthly_repert.php", "fa-calendar-alt", "Monthly Report", "text-success"],
-                    ["store_vew/analytics.php", "fa-chart-pie", "Analytics", "text-success"],
+                    ["store_vew/monthly_analysis.php", "fa-chart-pie", "Analytics", "text-success"],
                 ]
             ];
 

@@ -1,5 +1,5 @@
 <?php
-require('D:/Ampps/www/Store Management System/connection.php');
+require __DIR__ . '/../connection.php';
 ?>
 
 <!DOCTYPE html>
@@ -67,7 +67,7 @@ require('D:/Ampps/www/Store Management System/connection.php');
 </head>
 
 <body>
-    <div class="container"><?php require('D:\Ampps\www\Store Management System\banner.php'); ?>
+    <div class="container"><?php  require __DIR__ . '/../banner.php';?>
         <div class="calendar-container">
             <h1>Discount Calendar</h1>
             <div id="calendar"></div>

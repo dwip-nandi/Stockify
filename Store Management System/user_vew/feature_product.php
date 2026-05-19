@@ -1,5 +1,5 @@
 <?php
-require('D:/Ampps/www/Store Management System/connection.php');
+require __DIR__ . '/../connection.php';
 
 $query = "SELECT * FROM feature_products";
 $result = mysqli_query($conn, $query);
@@ -102,7 +102,7 @@ $slides = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 <body>
     <div class="container">
-        <?php require('D:/Ampps/www/Store Management System/banner.php'); ?>
+        <?php require __DIR__ . '/../banner.php'; ?>
 
         <div class="slider">
             <?php foreach ($slides as $index => $slide): ?>

@@ -1,5 +1,5 @@
 <?php
-require('D:/Ampps/www/Store Management System/connection.php');
+require __DIR__ . '/../connection.php';
 
 // Fetch events from the database, including description
 $sql = "SELECT event_name AS title, start_date AS start, end_date AS end, description FROM sales_events_calander";

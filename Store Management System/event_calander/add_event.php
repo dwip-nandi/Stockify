@@ -1,5 +1,6 @@
 <?php
-require('D:/Ampps/www/Store Management System/connection.php');
+require __DIR__ . '/../connection.php';
+require __DIR__ . '/../auth.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Sanitize and validate input
@@ -87,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
     <div class="container">
-        <?php require('D:\Ampps\www\Store Management System\banner.php'); ?>
+        <?php require __DIR__ . '/../banner.php'; ?>
         <form action="add_event.php" method="POST">
             Event Name: <input type="text" name="event_name" required><br>
             Start Date: <input type="date" name="start_date" required><br>
@@ -102,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                events: 'http://localhost/Store Management System/event_calander/fetch_events.php',
+                events: 'fetch_events.php',
                 eventsSet: function(events) {
                     console.log(events);
                 }

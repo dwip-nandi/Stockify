@@ -25,7 +25,7 @@ if (!empty($user_first_name) && !empty($user_last_name)) {
 
     <body>
         <div class="container">
-            <?php require('D:\Ampps\www\Store Management System\banner.php'); ?>
+            <?php require('banner.php'); ?>
 
             <div class="container mt-5">
                 <div class="card shadow">

@@ -75,7 +75,7 @@ if (!empty($user_first_name) && !empty($user_last_name)) {
 
 <body>
     <div class="container">
-        <?php require('D:\Ampps\www\Store Management System\banner.php'); ?>
+        <?php require('banner.php'); ?>
     <div class="form-container">
         <h2><i class="fa-solid fa-user-plus"></i> Add New User</h2>
 

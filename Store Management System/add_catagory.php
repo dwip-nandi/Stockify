@@ -78,7 +78,7 @@ if (!empty($user_first_name) && !empty($user_last_name)) {
 
 
         <div class="container">
-            <?php require('D:\Ampps\www\Store Management System\banner.php'); ?>
+            <?php require('banner.php'); ?>
             <h1 style="text-align: center;">Add a New Category</h1>
             <div class="container_div">
                 

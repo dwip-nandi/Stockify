@@ -1,5 +1,5 @@
 <?php
-require('D:\Ampps\www\Store Management System\connection.php');
+require __DIR__ . '/../connection.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_product'])) {
     $product_id = $_POST['product_id'];
     $add_quantity = $_POST['add_quantity'];

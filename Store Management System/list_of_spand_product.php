@@ -1,4 +1,3 @@
-<!-- This file is not access by user -->
 <?php require('connection.php');
 
 session_start();

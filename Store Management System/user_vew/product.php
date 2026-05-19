@@ -1,11 +1,6 @@
 <?php
-require('D:\Ampps\www\Store Management System\connection.php');
-session_start();
+require __DIR__ . '/../connection.php';
 
-if (!isset($_SESSION['user_first_name']) || !isset($_SESSION['user_last_name'])) {
-    header('location:login_system.php');
-    exit();
-}
 
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
@@ -193,7 +188,17 @@ $query = $conn->query($sql);
 </head>
 
 <body>
-    <div class="container"><?php require('D:\Ampps\www\Store Management System\banner.php'); ?>
+    <div class="container"><?php require __DIR__ . '/../banner.php'; ?>
+        <div class="nav-links" style="margin-bottom: 20px; text-align: center;">
+            <a href="feature_product.php" style="margin-right: 20px; padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 6px;">
+                🔥 Featured Products
+            </a>
+
+            <a href="/Store%20Management%20System/event_calander/event_calander.php" style="padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 6px;">
+                📅 Event Calendar
+            </a>
+        </div>
+
         <h2>Product List</h2>
 
         <form method='GET' action=''>

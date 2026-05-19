@@ -1,7 +1,8 @@
 <?php
-require('D:\Ampps\www\Store Management System\connection.php');
+require __DIR__ . '/../connection.php';
+require __DIR__ . '/../auth.php';
 // Set timezone (important for accurate date)
-date_default_timezone_set('Asia/Dhaka'); // change if needed
+date_default_timezone_set('Asia/Dhaka');
 
 $today = date('Y-m-d');
 $month = date('Y-m');

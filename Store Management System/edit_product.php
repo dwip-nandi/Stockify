@@ -1,155 +1,139 @@
 <?php
-require('D:\\Ampps\\www\\Store Management System\\connection.php');
+require('connection.php');
 session_start();
 
-$user_first_name = $_SESSION['user_first_name'];
-$user_last_name = $_SESSION['user_last_name'];
+// Validate product_id
+if (!isset($_GET['product_id']) || !is_numeric($_GET['product_id'])) {
+    echo "<script>alert('Invalid product ID.'); window.location='manage_products.php';</script>";
+    exit();
+}
 
-if (!empty($user_first_name) && !empty($user_last_name)) {
-    $sql1 = "SELECT * FROM `catagory_icatagory`";
-    $query1 = $conn->query($sql1);
-    $data_list = [];
+$product_id = $_GET['product_id'];
 
-    while ($data1 = mysqli_fetch_assoc($query1)) {
-        $data_list[$data1['catagory_id']] = $data1['catagory_name'];
+// Fetch product data
+$stmt = $conn->prepare("SELECT * FROM product WHERE product_id = ?");
+$stmt->bind_param("i", $product_id);
+$stmt->execute();
+$product = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+
+if (!$product) {
+    echo "<script>alert('Product not found.'); window.location='manage_products.php';</script>";
+    exit();
+}
+
+// Fetch categories
+$categories = mysqli_query($conn, "SELECT * FROM catagory_icatagory");
+
+// Handle update
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['product_name'];
+    $cat = $_POST['product_catagory'];
+    $code = $_POST['product_code'];
+    $loc = $_POST['product_location'];
+    $qty = $_POST['quantity'];
+    $buy = $_POST['purchase_price'];
+    $sell = $_POST['selling_price'];
+    $entry = $_POST['product_entry_date'];
+    $prod = $_POST['product_production_date'];
+    $exp = $_POST['product_date_over_date'];
+    $image = $product['product_image'];
+
+    // Handle image upload
+    if (!empty($_FILES['product_image']['name'])) {
+        $target_dir = "user_vew/imgs/";
+        $file_name = basename($_FILES["product_image"]["name"]);
+        $target_file = $target_dir . $file_name;
+        $file_tmp = $_FILES["product_image"]["tmp_name"];
+        $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+        $actual_type = mime_content_type($file_tmp);
+        $max_size = 2 * 1024 * 1024;
+
+        if (in_array($actual_type, $allowed_types) && $_FILES['product_image']['size'] <= $max_size) {
+            if (!is_dir($target_dir)) {
+                mkdir($target_dir, 0777, true);
+            }
+            if (move_uploaded_file($file_tmp, $target_file)) {
+                $image = $file_name;
+            }
+        }
     }
 
-    require('D:\\Ampps\\www\\Store Management System\\store_vew\\adding_product.php');
-    require('D:\\Ampps\\www\\Store Management System\\store_vew\\selling_product.php');
+    // Update query
+    $stmt = $conn->prepare("UPDATE product SET product_name=?, product_catagory=?, product_code=?, product_location=?, quantity=?, purchase_price=?, selling_price=?, product_entry_date=?, product_production_date=?, product_date_over_date=?, product_image=? WHERE product_id=?");
+    $stmt->bind_param("sissiddssssi", $name, $cat, $code, $loc, $qty, $buy, $sell, $entry, $prod, $exp, $image, $product_id);
+    $stmt->execute();
+    $stmt->close();
 
-    $search_name = $_GET['search_name'] ?? '';
-    $search_category = $_GET['search_category'] ?? '';
-
-    $limit = 10;
-    $page = max((int)($_GET['page'] ?? 1), 1);
-    $offset = ($page - 1) * $limit;
-
-    $where = "WHERE 1";
-    if (!empty($search_name)) {
-        $safe_name = $conn->real_escape_string($search_name);
-        $where .= " AND product_name LIKE '%$safe_name%'";
-    }
-    if (!empty($search_category)) {
-        $where .= " AND product_catagory = " . (int)$search_category;
-    }
-
-    $total_products = $conn->query("SELECT COUNT(*) AS total FROM product $where")->fetch_assoc()['total'];
-    $total_pages = ceil($total_products / $limit);
-
-    $query = $conn->query("SELECT * FROM product $where LIMIT $limit OFFSET $offset");
+    echo "<script>alert('Product updated successfully!'); window.location='manage_products.php';</script>";
+    exit();
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product List</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <style>
-        body { background-color: #f8f9fa; font-family: Arial, sans-serif; }
-        h1 { text-align: center; margin: 30px 0; font-weight: bold; color: #343a40; animation: slideText 3s linear infinite; }
-        @keyframes slideText { 0% { transform: translateX(0); } 50% { transform: translateX(30px); } 100% { transform: translateX(0); } }
-        .search-form { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-bottom: 30px; }
-        .search-form input[type="text"], .search-form select { padding: 8px; border: 1px solid #ced4da; border-radius: 5px; width: 200px; }
-        .search-form input[type="submit"] { background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-        table { width: 100%; background-color: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        thead { background-color: #007bff; color: #fff; }
-        th, td { padding: 10px; text-align: center; font-size: 14px; }
-        tbody tr:hover { background-color: #f1f1f1; }
-        .low-stock { background-color: #ffecec; }
-        .inline-form input[type="number"] { width: 70px; padding: 5px; margin-right: 5px; }
-        .inline-form input[type="submit"] { padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; }
-        .inline-form input[name="add_product"] { background-color: #28a745; color: white; }
-        .inline-form input[name="sell_product"] { background-color: #dc3545; color: white; }
-        .edit-button { background-color: #ffc107; color: white; padding: 5px 10px; border: none; border-radius: 5px; text-decoration: none; }
-        .edit-button:hover { background-color: #e0a800; }
-        .pagination { text-align: center; margin-top: 30px; }
-        .pagination a, .pagination strong { margin: 0 5px; padding: 8px 12px; text-decoration: none; border-radius: 4px; }
-        .pagination a { background-color: #e9ecef; color: #007bff; }
-        .pagination strong { background-color: #007bff; color: white; }
-    </style>
+    <title>Edit Product</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <?php require('D:\\Ampps\\www\\Store Management System\\banner.php'); ?>
-        <h1>Product List</h1>
-
-        <form method="GET" class="search-form">
-            <input type="text" name="search_name" placeholder="Search Name" value="<?= htmlspecialchars($search_name) ?>">
-            <select name="search_category">
-                <option value="">All Categories</option>
-                <?php foreach ($data_list as $id => $name): ?>
-                    <option value="<?= $id ?>" <?= $search_category == $id ? 'selected' : '' ?>><?= htmlspecialchars($name) ?></option>
-                <?php endforeach; ?>
-            </select>
-            <input type="submit" value="Search">
-        </form>
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Code</th>
-                    <th>Quantity</th>
-                    <th>Sell Price</th>
-                    <th>Purchase Price</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $query->fetch_assoc()): ?>
-                    <tr class="<?= $row['quantity'] < 20 ? 'low-stock' : '' ?>">
-                        <td><?= $row['product_id'] ?></td>
-                        <td><?= htmlspecialchars($row['product_name']) ?></td>
-                        <td><?= htmlspecialchars($data_list[$row['product_catagory']] ?? 'Unknown') ?></td>
-                        <td><?= htmlspecialchars($row['product_code']) ?></td>
-                        <td><?= $row['quantity'] ?></td>
-                        <td><?= $row['selling_price'] ?></td>
-                        <td><?= $row['purchase_price'] ?></td>
-                        <td>
-                            <a class="edit-button" href="edit_product.php?id=<?= $row['product_id'] ?>">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-
-        <div class="pagination">
-            <?php
-            $base_url = strtok($_SERVER["REQUEST_URI"], '?') . '?';
-            $params = $_GET;
-            unset($params['page']);
-            $base_url .= http_build_query($params);
-            $base_url .= (count($params) > 0 ? '&' : '');
-
-            if ($page > 1) {
-                echo "<a href='{$base_url}page=" . ($page - 1) . "'>&laquo; Prev</a>";
-            }
-
-            for ($i = 1; $i <= $total_pages; $i++) {
-                if ($i == $page) {
-                    echo "<strong>$i</strong>";
-                } else {
-                    echo "<a href='{$base_url}page=$i'>$i</a>";
-                }
-            }
-
-            if ($page < $total_pages) {
-                echo "<a href='{$base_url}page=" . ($page + 1) . "'>Next &raquo;</a>";
-            }
-            ?>
+<div class="container mt-5">
+    <h2>Edit Product</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label>Product Name</label>
+            <input type="text" name="product_name" class="form-control" value="<?= htmlspecialchars($product['product_name']) ?>" required>
         </div>
-    </div>
+        <div class="mb-3">
+            <label>Product Category</label>
+            <select name="product_catagory" class="form-control" required>
+                <?php while ($cat = mysqli_fetch_assoc($categories)): ?>
+                    <option value="<?= $cat['catagory_id'] ?>" <?= $cat['catagory_id'] == $product['product_catagory'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($cat['catagory_name']) ?>
+                    </option>
+                <?php endwhile; ?>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label>Product Code</label>
+            <input type="text" name="product_code" class="form-control" value="<?= htmlspecialchars($product['product_code']) ?>" required>
+        </div>
+        <div class="mb-3">
+            <label>Product Location</label>
+            <input type="text" name="product_location" class="form-control" value="<?= htmlspecialchars($product['product_location']) ?>" required>
+        </div>
+        <div class="mb-3">
+            <label>Quantity</label>
+            <input type="number" name="quantity" class="form-control" value="<?= htmlspecialchars($product['quantity']) ?>" required>
+        </div>
+        <div class="mb-3">
+            <label>Purchase Price</label>
+            <input type="number" name="purchase_price" class="form-control" value="<?= htmlspecialchars($product['purchase_price']) ?>" required>
+        </div>
+        <div class="mb-3">
+            <label>Selling Price</label>
+            <input type="number" name="selling_price" class="form-control" value="<?= htmlspecialchars($product['selling_price']) ?>" required>
+        </div>
+        <div class="mb-3">
+            <label>Entry Date</label>
+            <input type="date" name="product_entry_date" class="form-control" value="<?= $product['product_entry_date'] ?>" required>
+        </div>
+        <div class="mb-3">
+            <label>Production Date</label>
+            <input type="date" name="product_production_date" class="form-control" value="<?= $product['product_production_date'] ?>" required>
+        </div>
+        <div class="mb-3">
+            <label>Expiry Date</label>
+            <input type="date" name="product_date_over_date" class="form-control" value="<?= $product['product_date_over_date'] ?>" required>
+        </div>
+        <div class="mb-3">
+            <label>Current Image</label><br>
+            <img src="user_vew/imgs/<?= htmlspecialchars($product['product_image']) ?>" width="100"><br><br>
+            <input type="file" name="product_image" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Update Product</button>
+    </form>
+</div>
 </body>
 </html>
-<?php
-} else {
-    header('location:login_system.php');
-    exit();
-}
-?>

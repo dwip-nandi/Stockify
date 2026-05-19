@@ -1,3 +1,6 @@
+<?php
+ require __DIR__ . '/../auth.php';
+?>
 <!DOCTYPE html>
 <html>
 
@@ -28,10 +31,10 @@
 
 <body>
     <div class="container">
-        <?php require('D:\Ampps\www\Store Management System\banner.php'); ?>
+        <?php require __DIR__ . '/../banner.php';?>
         <h1 style="text-align: center;">Profit Calendar</h1>
 
-        <?php require('D:\Ampps\www\Store Management System\store_vew/profit_clc.php'); ?>
+        <?php require('profit_clc.php'); ?>
 
 
         <div id="monthly-summary" style=" text-align: center;">Loading monthly profit...</div>

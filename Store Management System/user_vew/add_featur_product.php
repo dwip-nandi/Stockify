@@ -1,5 +1,7 @@
 <?php
-require('D:\Ampps\www\Store Management System\connection.php');
+
+require __DIR__ . '/../connection.php';
+require __DIR__ . '/../auth.php';
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -90,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <div class="container">
-        <?php require('D:\Ampps\www\Store Management System\banner.php'); ?>
+        <?php require __DIR__ . '/../banner.php'; ?>
         <div class="container_f">
             <h2>Add Featured Product</h2>
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">

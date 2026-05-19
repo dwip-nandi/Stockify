@@ -1,5 +1,5 @@
 <?php
-require('D:\Ampps\www\Store Management System\connection.php');
+require __DIR__ . '/../connection.php';
 
 $month = $_GET['month'] ?? date('Y-m');
 

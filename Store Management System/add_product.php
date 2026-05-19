@@ -157,7 +157,7 @@ if (!empty($user_first_name) && !empty($user_last_name)) {
 
     <body>
         <div class="container">
-            <?php require('D:\Ampps\www\Store Management System\banner.php'); ?>
+            <?php require('banner.php'); ?>
             <div class="containerx">
                 <h2>Add Product</h2>
                 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">

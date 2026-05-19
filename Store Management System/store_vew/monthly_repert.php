@@ -1,5 +1,6 @@
 <?php
-require('D:\\Ampps\\www\\Store Management System\\connection.php');
+require __DIR__ . '/../connection.php';
+require __DIR__ . '/../auth.php';
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +25,7 @@ require('D:\\Ampps\\www\\Store Management System\\connection.php');
 
 <body class="bg-light">
         <div class="container py-5">
-                <?php require('D:\Ampps\www\Store Management System\banner.php'); ?>
+                <?php require __DIR__ . '/../banner.php';?>
                 <h1 class="mb-4 text-center">📊 Monthly Report - Stockify</h1>
                 <h4 class="mb-4 text-center">
                         <?php
